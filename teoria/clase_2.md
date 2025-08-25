@@ -18,23 +18,24 @@ En sistemas distribuidos es necesario la **comunicación**.
 ![alt text](image-1.png)
 
 ## Características del modelo
-1. Modelo independiente de la cantidad de máquinas/procesos: se basa en la interacción de dos tipos de procesos clientes (activos) y servidores. 
-2. Rol activo del cliente: estos procesos inician la comunicación mediante una petición. 
+1. **Modelo independiente de la cantidad de máquinas/procesos**: se basa en la interacción de dos tipos de procesos clientes (activos) y servidores. 
+2. **Rol activo del cliente**: estos procesos inician la comunicación mediante una petición. 
 3. Los servidores son pasivos en la interacción pues dessconoce cuándo llegará una petición. 
 4. Los clientes son los que usan o necesitan recursos que requieren al servidor. 
 5. Los servidores administran aquellos recursos. 
-6. Visión de los recursos: 
-    - clientes: visión limitada a los recursos que necesitan 
-    - servidores: visión amplia del estado de todos los recursos que administran. 
+6. **Visión de los recursos**: 
+    - **clientes**: visión limitada a los recursos que necesitan 
+    - **servidores**: visión amplia del estado de todos los recursos que administran. 
 8.  Independencia en la transferencia de información: normalmente asuman que hay un sistema de transporte de los requerimientos que no implementan, sólo son usuarios. 
 9. Interfaz bien definida: 
     - cómo se solicita un servicio y qué datos son necesarios al enviar una petición
     - cómo se retorna la respuesta a un cliente y qué datos se le devuelven como resultado del servicio solicitado. 
 
 > El modelo cliente servidor es casi la forma lógica de procesamiento al menos en el inicio de los sistemas distribuidos, no se hace más que seguir el modelo de interacción de procesos de usuario con los sistemas operativos y las ideas más conceptuales de los protocolos de comunicación. 
+[revisar el tenmbaum sobre esto]
 
 # Sockets 
-Es necesario no confundir que el uso de sockets signifique que se está usando el modelo cliente/servidor porque es _comunicación_. 
-La creación de la conexión sí es parecida al modelo cliente/servidor, pero es necesario entender que si hay conexión TCP no implica que se esté usando el modelo C/S, ni tampoco al revés ya que no siempre la comunicación es mediante sockets lo que importa es la interfaz. 
+Es necesario no confundir que el uso de sockets signifique que se está usando el modelo cliente/servidor porque es **_comunicación_**. 
+La **creación de la conexión sí es parecida al modelo** cliente/servidor (recordar que es asimétrico: listen/send), pero es necesario entender que si hay conexión TCP no implica que se esté usando el modelo C/S, ni tampoco al revés ya que no siempre la comunicación es mediante sockets lo que importa es la **interfaz**. Entender la conexión del socket como el puente (lit, es la comunicación) entre el modelo cliente/servidor. 
 
 
