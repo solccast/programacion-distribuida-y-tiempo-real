@@ -39,7 +39,24 @@ b - Un proceso “cliente” puede tener una conexión con el proceso “servido
 
 Lo que probé fue dormir el proceso por 30 segundos y que se cierre el socket para ver el proceso cliente y qué es lo que ocurría: el requerimiento se encola y nunca es tomado por el servidor, mientras tanto el cliente se queda esperando; una vez que el socket se cierra el cliente lanza el error `ERROR reading from socket: Connection reset by peer`.
 
-3) Modifique el código (programa C o Java o ambos) para que la cantidad de datos que se comunican sea de 101, 102, 103, 104, 105 y 106 y contengan bytes asignados directamente en el programa (sin leer de teclado ni mostrar en pantalla los datos del buffer). Tenga en cuenta que el valor de retorno de la llamada a read(...) tanto en C como en Java retornan la cantidad de bytes efectivamente le´ıda y puede ser menor a la que se le indica/pedida como par´ametro. Explique c´omo verifica el correcto funcionamiento de lo desarrollado. El env´ıo debe realizarse en una ´unica llamada a la funci´on correspondiente a menos que el valor de retorno indique que hay datos pendientes de env´ıo.
+## 3) Modifique el código (programa C o Java o ambos) para que la cantidad de datos que se comunican sea de $10^1$, $10^2$, $10^3$, $10^4$, $10^5$ y $10^6$ y contengan bytes asignados directamente en el programa (sin leer de teclado ni mostrar en pantalla los datos del buffer). Tenga en cuenta que el valor de retorno de la llamada a `read(...)` tanto en C como en Java retornan la cantidad de bytes efectivamente leída y puede ser menor a la que se le indica/pedida como parámetro. Explique cómo verifica el correcto funcionamiento de lo desarrollado. El envío debe realizarse en una única llamada a la función correspondiente a menos que el valor de retorno indique que hay datos pendientes de envío.
+
+## 5) ¿Podría implementar un servidor de archivos remotos utilizando sockets? Describa brevemente la interfaz y los detalles que considere más importantes del diseño. No es necesario implementar. 
+
+Sí es posible realizar la transferencia de archivos, requeriría. 
+Por ejemplo:
+- `UPLOAD <cantidad_bytes>`: en este caso el cliente envía el mensaje con la palabra clave que se indica, espera que el servidor responda con un `OK` o `ERROR`. si el servidor responde un `OK` prepara el buffer para la cantidad de bytes indicada y el cliente empieza con el envío de bytes. Por cada mensaje que se envía, el servidor controla y recibe hasta completar su búffer. Si no se completa envía al Cliente un `CONTINUE` tal que éste siga enviando. Una vez que se complete la cantidad de de bytes del servidor envía un `OK` para indicar que llegó completamente la información.   
+- `DOWNLOAD <nombre_recurso>`: el cliente envía el mensaje con la palabra clave que se indica con el archivo que requiere. El servidor recibe el mensaje y busca en sus recursos si está presente <nombre_recurso>. En caso de no tenerlo envía un `ERROR` o sino envía un `OK <cantidad_bytes>` para que el cliente se prepare para recibir la cantidad de bytes indicada y responde con un `OK`. Ambos se encuentran preparados para la transferencia de datos: servidor inicia el envío de bytes. Cliente recibe todos los mensajes. Esto también podría hacerse que en un sólo mensaje se envíe todos los bytes de esta forma `OK <cantidad bytes> {bytes}` o un `ERROR`. 
+Se puede complejizar o hacer más fácil uwu  
+
+
+## 6)  Explique y justifique brevemente ventajas y desventajas de un servidor con estado respecto de un servidor sin estados. Considere las respuestas de diferentes asistentes de IA y analice
+a) Similitudes y diferencias entre las respuestas de los diferentes asistentes de IA.
+b) Elabore su propio análisis.
+
+https://medium.com/@ahmedossama22/stateless-vs-stateful-servers-with-examples-6e37223c028f
+
+https://www.google.com/search?q=servidor+con+estado&oq=servidor+con+estado+&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIICAEQABgWGB4yCAgCEAAYFhgeMggIAxAAGBYYHjIICAQQABgWGB4yCAgFEAAYFhgeMggIBhAAGBYYHjIICAcQABgWGB4yCAgIEAAYFhgeMggICRAAGBYYHtIBCDQ2MTBqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8
 
 ---
 
