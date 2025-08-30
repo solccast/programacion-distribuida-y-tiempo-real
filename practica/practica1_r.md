@@ -52,11 +52,58 @@ Se puede complejizar o hacer más fácil uwu
 
 ## 6)  Explique y justifique brevemente ventajas y desventajas de un servidor con estado respecto de un servidor sin estados. Considere las respuestas de diferentes asistentes de IA y analice
 a) Similitudes y diferencias entre las respuestas de los diferentes asistentes de IA.
+
+### ChatGPT Plus 5
+Qué significa?
+- **Con estado (stateful)**: el servidor recuerda información de la sesión/conversación (progreso, carrito, autenticación) entre requests.
+- **Sin estado (stateless)**: cada request es autosuficiente; el servidor no guarda contexto entre llamadas.
+
+**Ventajas de con estado por sobre los servidores sin estado**: 
+- Menos sobrecarga por request: no hace falta reenviar todo el contexto en cada llamada -> menor latencia y ancho de banda.
+- Flujos multipaso más simples: protocolos de varias capas, transacciones largas o conversaciones se modelan más naturalmente porque el servidor recuerda el progreso. 
+- Cachés por usuario/sesión más efectivas: memorizar resultados más específicos del cliente y reducir cómputo repetido.
+
+**Desventajas de con estado por sobre los servidores sin estado**:
+- Escalado horizontal más difícil: es necesario replicar/compartir estado, complica el balanceo. 
+- Menor tolerancia a fallos: si cae un nodo, se pierde la sesión.
+- Mayor consumo por cliente: el estado residente ocupa memoria y limita la concurrencia máxima. 
+- Idempotencia y depuración más complejas: efectos por estado implícito hacen más fácil tener side effects inesperados.
+
+**¿Cuándo conviene cada uno?**
+- **Con estado**: sesiones interactivas y continuas donde el contexto cambia rápido y es costoso retransmitirlo (juegos, trading de baja latencia, chats persistentes, protocolos orientados a conexión).
+- **Sin estado**: APIs web y microservicios que priorizan escalabilidad, resiliencia y simplicidad operativa (cualquier nodo puede atender cualquier request).
+
+
+### Gemini
+**Ventajas de un servidor con estado**:
+- Personalización y experiencia de usuario.
+- Reducción de datos en peticiones: al no tener que enviar toda la cada solicitud, el tamaño de las peticiones menor, loque puede mejorar la latencia y el consumo de ancho de banda. 
+- Lógica de negocio simplificada: la lógica de la aplicación puede ser más simple porque el contexto de la sesión está disponible para solicitud. 
+
+**Desventajas de un servidor con estado**:
+- Escalabilidad limitada: al depender de la información de la sesión es dificil escalar horizontalmente. Si un cliente cambia de servidor la información de su sesión se pierde. Lo que requiere mecanismos complejos como sesiones compartidas. 
+- Tolerancia a fallos: si un servidor con estado falla, la información de la sesión de todos los clientes que estaban conectados a él se pierde.
+- Gestión de recursos copleja: el servidor debe asignar recursos de memoria parap cada sesión activa, lo que puede llevar a problemas de memoria y a una gestión más compleja. 
+
+**Ventajas de un servidor sin estado**:
+- Escalabilidad: son más fáciles de escalar horizontalmente. Ideal para aplicaciones con un alto volumen de tráfico. 
+- Fiabilidad y tolerancia a fallos: la caída de un servidor no afecta a las sesiones de los clientes. 
+
+**Desventajas de un servidor sin estado**:
+- Sobrecarga de datos en peticiones: cada solicitud debe contener toda la información necesaria para que el servidor la procese, la que puede aumentar el tamaño de la petición y el consumo de ancho de banda. 
+- Mayor compmlejdad en el cliente: el cliente es responsable de manteener el estado de la sesión y de enviarlo con cada solicitud. 
+- Experiencia de usuario menos fluida: para tareas que requierem múltiples pasos, el cliente tiene que gestionar y enviar el estado en cada paso.
+
+### Sobre Copilot y Claude
+Explican maso lo mismo pero más simple y claro. GPT se pasa en técnicom tuve q depurar para que se entienda. 
+
+
 b) Elabore su propio análisis.
+Siempre depende del objetivo de la aplicación y los recursos que se tengan para poder atender a la demanda. Si el objetivo está en priorizar la experiencia de usuario y la personalización es conveniente que mantener un servidor con estado en el cual se tenga en cuenta las preferencias del usuario, si en cambio el objetivo es, por ejemplo, ofrecer información es más conveniente un servidor sin estado. Se debe tener en cuenta también que el costo de cómputo es menor al costo de acceso a memoria por lo que es necesario también un equilibrio.  
 
-https://medium.com/@ahmedossama22/stateless-vs-stateful-servers-with-examples-6e37223c028f
 
-https://www.google.com/search?q=servidor+con+estado&oq=servidor+con+estado+&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIICAEQABgWGB4yCAgCEAAYFhgeMggIAxAAGBYYHjIICAQQABgWGB4yCAgFEAAYFhgeMggIBhAAGBYYHjIICAcQABgWGB4yCAgIEAAYFhgeMggICRAAGBYYHtIBCDQ2MTBqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8
+
+
 
 ---
 
@@ -83,3 +130,8 @@ Se bloquea esperando un cliente. Cuando llega uno, el kernel lo saca de la cola 
 → El socket original (sockfd) sigue escuchando y puede aceptar otros clientes.
 
 ![alt text](image-1.png)
+
+## Sobre servidores statelles o stateful
+- https://medium.com/@ahmedossama22/stateless-vs-stateful-servers-with-examples-6e37223c028f
+
+- https://www.redhat.com/es/topics/cloud-native-apps/stateful-vs-stateless
