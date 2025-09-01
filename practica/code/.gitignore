@@ -1,0 +1,9 @@
+# Ignorar ejecutables sin extensión
+*
+!*/
+!*.c
+!*.h
+!*.md
+!*.txt
+!*.java
+!.gitignore
