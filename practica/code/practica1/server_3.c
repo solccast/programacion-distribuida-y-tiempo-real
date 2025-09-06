@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 {
      int sockfd, newsockfd, portno;
      socklen_t clilen;
-     char buffer[256];
+     int size_buffer[6] = {10, 100, 1000, 10000, 100000, 1000000};
      struct sockaddr_in serv_addr, cli_addr;
      int n;
 
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
               error("ERROR on binding");
 			  
      // SETEA LA CANTIDAD QUE PUEDEN ESPERAR MIENTRAS SE MANEJA UNA CONEXIÓN
-     listen(sockfd, 5);
+     listen(sockfd, sizeof(size_buffer));
 	 
 	 // SE BLOQUEA A ESPERAR UNA CONEXIÓN
      clilen = sizeof(cli_addr);
@@ -63,17 +63,19 @@ int main(int argc, char *argv[])
      // DEVUELVE UN NUEVO DESCRIPTOR POR EL CUAL SE VAN A REALIZAR LAS COMUNICACIONES
 	 if (newsockfd < 0) 
           error("ERROR on accept");
-		  
-     bzero(buffer, 256);
 
 	 // LEE EL MENSAJE DEL CLIENTE
-     n = read(newsockfd, buffer, 255);
-     if (n < 0) error("ERROR reading from socket");
-     printf("Here is the message: %s\n", buffer);
-	 
-	 // RESPONDE AL CLIENTE
-     n = write(newsockfd, "I got your message", 18);
-     if (n < 0) error("ERROR writing to socket");
+     for(int i = 0; i < sizeof(size_buffer); i++){
+          // Reservo el espacio del buffer
+          double buffer[size_buffer[i]];
+          // Leo el mensaje del cliente
+          n = read(newsockfd, buffer, size_buffer[i]);
+          // Si hay un error lo notifico
+          if (n < 0) error("ERROR reading from socket");
+          printf("Tamaño del mensaje recibido: %d\n", n);
+          // Limpio el buffer
+          bzero(buffer, size_buffer[i]);
+     }
 
      // CIERRA LOS SOCKETS
      close(newsockfd);

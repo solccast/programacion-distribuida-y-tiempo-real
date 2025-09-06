@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     int sockfd, portno, n;
     struct sockaddr_in serv_addr;
     struct hostent *server;
-    int size_buffer[5] = {10, 100, 1000, 1000, 1000};
+    int size_buffer[6] = {10, 100, 1000, 10000, 100000, 1000000};
     //char buffer[256];
     if (argc < 3) {
        fprintf(stderr,"usage %s hostname port\n", argv[0]);
@@ -59,31 +59,28 @@ int main(int argc, char *argv[])
 
     // Acá es donde se modificará la entrada de datos. 
     int i, j; 
-    for (i = 0; i < 5; i++){
+    for (i = 0; i < sizeof(size_buffer); i++){
+        // Reservo el espacio del buffer
         char buffer[size_buffer[i]];
         bzero(buffer, size_buffer[i]);
         // Llenamos completamente el buffer sin la entrada estándar  
         for (j = 0; j < size_buffer[i]; j++) {
             buffer[j] = 'A';
         }
-    }
-    }
-    bzero(buffer, 256);
-    fgets(buffer, 255, stdin);
 
-    // ENVÍA UN MENSAJE AL SOCKET
-    n = write(sockfd, buffer, strlen(buffer));
-    if (n < 0) 
-         error("ERROR writing to socket");
+        // ENVÍA UN MENSAJE AL SOCKET
+        n = write(sockfd, buffer, size_buffer[i]);
+        if (n < 0) 
+             error("ERROR writing to socket");
+        else 
+            printf("Mensaje de tamaño %d enviado\n", n);
 
-    bzero(buffer, 256);
-	
-    // ESPERA RECIBIR UNA RESPUESTA
-    n = read(sockfd, buffer, 255);
-    if (n < 0) 
-         error("ERROR reading from socket");
-    
-    printf("%s\n", buffer);
+        //Limpio el buffer
+        bzero(buffer, size_buffer[i]);
+
+        printf("Mensaje de tamaño %d enviado\n", size_buffer[i]);
+    }
+
 
     // CIERRA EL SOCKET
     close(sockfd);
