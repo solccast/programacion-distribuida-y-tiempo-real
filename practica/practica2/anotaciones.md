@@ -26,9 +26,26 @@ Release:        18.04
 Codename:       bionic
 ```
 
+---
+# Considerar
+Para ejecutar client_prueba en una máquina y que envíe datos a server_prueba en otra máquina de la misma red, sigue estos pasos:
 
+1. En la máquina servidor (donde ejecutas server_prueba):
+Obtén la dirección IP local de la máquina (puedes usar ipconfig en Windows o ifconfig/ip a en Linux).
+Ejecuta el servidor con el puerto y tamaño deseado:
+(Asegúrate de que el firewall permita conexiones entrantes al puerto usado, por ejemplo, 12345).
+2. En la máquina cliente (donde ejecutas client_prueba):
+Usa la IP de la máquina servidor como parámetro HOST:
+(Reemplaza 192.168.1.100 por la IP real del servidor).
+3. Consideraciones adicionales
+- Ambos ejecutables deben estar compilados y accesibles en sus respectivas máquinas.
+- El puerto debe ser el mismo en ambos comandos.
+- La red debe permitir la comunicación entre ambas máquinas (sin restricciones de firewall o NAT).
+Si usas el script bash, reemplaza HOST="localhost" por la IP del servidor.
+Ejemplo de cambio en el script `HOST="192.168.1.100"  # IP del servidor`
 
 ---
 ## Referencias 
 https://documentation.ubuntu.com/public-images/public-images-how-to/run-a-vagrant-box/
+
 
