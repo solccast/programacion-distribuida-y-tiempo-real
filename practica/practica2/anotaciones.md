@@ -44,6 +44,8 @@ Usa la IP de la máquina servidor como parámetro HOST:
 Si usas el script bash, reemplaza HOST="localhost" por la IP del servidor.
 Ejemplo de cambio en el script `HOST="192.168.1.100"  # IP del servidor`
 
+Comandos para saber info: `cat /proc/cpuinfo` para saber los requerimientos de la máquina 
+
 ---
 ## Referencias 
 https://documentation.ubuntu.com/public-images/public-images-how-to/run-a-vagrant-box/
