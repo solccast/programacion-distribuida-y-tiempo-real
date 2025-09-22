@@ -44,27 +44,35 @@ int main(int argc, char *argv[])
     if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
         error("ERROR on binding");
 
-    listen(sockfd,1); // Se setea la cantidad de conexiones en espera
+    listen(sockfd,10); // Se setea la cantidad de conexiones en espera
     clilen = sizeof(cli_addr);
     newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *)&clilen);
     if (newsockfd < 0)
         error("ERROR on accept");
 
-    char buffer[cantidad_bytes];
+    /*Reserva de memoria ---------*/
+    char *buffer = (char *)malloc(cantidad_bytes * sizeof(char));
     bzero(buffer, cantidad_bytes);
+    /*---------------------------*/
+
     t0 = dwalltime();
-    n = read(newsockfd, buffer, cantidad_bytes);
+    int bytes_recibidos = 0; 
+    int contador = 0;
+    while (bytes_recibidos < cantidad_bytes) {
+        n = read(newsockfd, &buffer[bytes_recibidos], cantidad_bytes - bytes_recibidos);
+        if (n < 0)
+            error("ERROR reading from socket");
+        bytes_recibidos += n;
+        contador++;
+    }
     t1 = dwalltime();
-    if (n < 0)
-        error("ERROR reading from socket");
-    else
-        printf("Mensaje de tamaño %d recibido\n", n);
 
     tiempo = t1 - t0;
-    printf("Tiempo de transferencia para %d bytes: %f segundos\n", cantidad_bytes, tiempo);
+    printf("| SERVER:: | %d | %f | %d lecturas|\n", bytes_recibidos, tiempo, contador);
 
     close(newsockfd);
     close(sockfd);
+    free(buffer);
     return 0;
 }
 

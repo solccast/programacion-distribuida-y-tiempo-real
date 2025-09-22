@@ -53,27 +53,30 @@ int main(int argc, char *argv[])
 
     
     /* Preparacion de la estructura*/    
-    char buffer[cantidad_bytes];
+    char *buffer = (char *)malloc(cantidad_bytes * sizeof(char));
     bzero(buffer, cantidad_bytes);
     for (int j = 0; j < cantidad_bytes; j++) {
-        buffer[j] = 'A';
+        buffer[j] = 'A'; // Nos aseguramos que el buffer no esté vacío
     }
 
     /* Envío del mensaje al socket */
     t0 = dwalltime(); 
-    n = write(sockfd, buffer, cantidad_bytes);
+    int bytes_enviados = 0; 
+    int cantidad_conexiones = 0;
+    while (bytes_enviados < cantidad_bytes) {
+        n = write(sockfd, &buffer[bytes_enviados], cantidad_bytes - bytes_enviados);
+        if (n < 0)
+            error("ERROR writing to socket");
+        bytes_enviados += n;
+        cantidad_conexiones++;
+    }
     t1 = dwalltime();
-    if (n < 0)
-         error("ERROR writing to socket");
-    else
-        printf("Mensaje de tamaño %d enviado\n", n);
-
-    bzero(buffer, cantidad_bytes);
 
     tiempo = t1 - t0;
-    printf("Tiempo de transferencia para %d bytes: %f segundos\n", cantidad_bytes, tiempo);
+    printf("| CLIENTE:: | %d |  %f | %d envío(s) |\n", cantidad_bytes, tiempo, cantidad_conexiones);
 
     close(sockfd);
+    free(buffer);
     return 0;
 }
 
