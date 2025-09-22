@@ -133,7 +133,7 @@ Se bloquea esperando un cliente. Cuando llega uno, el kernel lo saca de la cola 
 
 ![alt text](image-1.png)
 
-## Sobre servidores statelles o stateful
+## Sobre servidores stateless o stateful
 - https://medium.com/@ahmedossama22/stateless-vs-stateful-servers-with-examples-6e37223c028f
 
 - https://www.redhat.com/es/topics/cloud-native-apps/stateful-vs-stateless

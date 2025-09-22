@@ -44,31 +44,47 @@ int main(int argc, char *argv[])
     if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
         error("ERROR on binding");
 
-    listen(sockfd,1); // Se setea la cantidad de conexiones en espera
+    listen(sockfd,20); // Se setea la cantidad de conexiones en espera
     clilen = sizeof(cli_addr);
     newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *)&clilen);
     if (newsockfd < 0)
         error("ERROR on accept");
 
-    char buffer[cantidad_bytes];
+    /*Preparación del búffer*/
+    char *buffer = (char *)malloc(cantidad_bytes * sizeof(char));
     bzero(buffer, cantidad_bytes);
+    
+    /*Recibimiento de datos*/
+    int bytes_recibidos = 0;
+    int fragmentos_recibidos = 0;
+
     t0 = dwalltime();
-    n = read(newsockfd, buffer, cantidad_bytes);
-    t1 = dwalltime();
-    if (n < 0)
-        error("ERROR reading from socket");
-    else
-        printf("Mensaje de tamaño %d recibido\n", n);
+    while (bytes_recibidos < cantidad_bytes) {
+        n = read(newsockfd, &buffer[bytes_recibidos], cantidad_bytes - bytes_recibidos);
+        if (n < 0)
+            error("ERROR reading from socket");
+        bytes_recibidos += n;
+        fragmentos_recibidos++;
+    }
 
     // Reenviar los datos recibidos al cliente (ping-pong)
-    n = write(newsockfd, buffer, cantidad_bytes);
-    if (n < 0)
-        error("ERROR writing to socket");
-    else
-        printf("Mensaje de tamaño %d reenviado\n", n);
+    int bytes_enviados = 0;
+    while (bytes_enviados < cantidad_bytes) {
+        n = write(newsockfd, &buffer[bytes_enviados], cantidad_bytes - bytes_enviados);
+        if (n < 0)
+            error("ERROR writing to socket");
+        bytes_enviados += n;
+    }
 
+    t1 = dwalltime();
     close(newsockfd);
     close(sockfd);
+
+    double tiempo_total = t1 - t0; 
+    double one_way_tiempo = tiempo_total / 2.0;
+    printf("| SERVER:: | %d | %f | %f |\n", cantidad_bytes, tiempo_total, one_way_tiempo);
+
+    free(buffer);
     return 0;
 }
 

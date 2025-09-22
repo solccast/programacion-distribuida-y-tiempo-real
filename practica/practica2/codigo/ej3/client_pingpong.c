@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     int sockfd, portno, n;
     struct sockaddr_in serv_addr;
     struct hostent *server;
-    double t0, t1, tiempo; 
+    double t0, t1;
 
     if (argc < 4) {
        fprintf(stderr,"usage %s hostname port cantidad_bytes\n", argv[0]);
@@ -53,32 +53,42 @@ int main(int argc, char *argv[])
 
     
     /* Preparacion de la estructura*/    
-    char buffer[cantidad_bytes];
+    char *buffer = (char *)malloc(cantidad_bytes * sizeof(char));
     bzero(buffer, cantidad_bytes);
     for (int j = 0; j < cantidad_bytes; j++) {
         buffer[j] = 'A';
     }
 
     /* Envío del mensaje al socket y espera de respuesta (ping-pong) */
+    int bytes_enviados = 0;
     t0 = dwalltime();
-    n = write(sockfd, buffer, cantidad_bytes);
-    if (n < 0)
-         error("ERROR writing to socket");
-    else
-        printf("Mensaje de tamaño %d enviado\n", n);
+    while (bytes_enviados < cantidad_bytes) {
+        n = write(sockfd, &buffer[bytes_enviados], cantidad_bytes - bytes_enviados);
+        if (n < 0)
+            error("ERROR writing to socket");
+        bytes_enviados += n;
+    }
 
-    bzero(buffer, cantidad_bytes);
-    n = read(sockfd, buffer, cantidad_bytes); // Espera la respuesta del servidor
+    // Esperar la respuesta del servidor
+    int bytes_recibidos = 0;
+    int fragmentos_recibidos = 0;
+    while (bytes_recibidos < cantidad_bytes) {
+        n = read(sockfd, &buffer[bytes_recibidos], cantidad_bytes - bytes_recibidos);
+        if (n < 0)
+            error("ERROR reading from socket");
+        bytes_recibidos += n;
+        fragmentos_recibidos++;
+    }
+    
     t1 = dwalltime();
-    if (n < 0)
-        error("ERROR reading from socket");
-    else
-        printf("Mensaje de tamaño %d recibido de vuelta\n", n);
 
-    tiempo = (t1 - t0) / 2.0;
-    printf("Tiempo estimado de transferencia para %d bytes (ida o vuelta): %f segundos\n", cantidad_bytes, tiempo);
+    double tiempo_total = (t1 - t0);
+    double one_way_tiempo = tiempo_total / 2.0;
+
+    printf("| CLIENTE:: | %d | %f | %f | %f |\n", cantidad_bytes, tiempo_total, one_way_tiempo);
 
     close(sockfd);
+    free(buffer);
     return 0;
 }
 
