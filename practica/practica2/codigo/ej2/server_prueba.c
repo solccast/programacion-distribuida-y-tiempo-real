@@ -9,6 +9,7 @@
 
 double dwalltime(); 
 
+#define CANTIDAD_EXPERIMENTO 10
 
 void error(char *msg)
 {
@@ -47,34 +48,34 @@ int main(int argc, char *argv[])
     if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
         error("ERROR on binding");
 
-    listen(sockfd,10); // Se setea la cantidad de conexiones en espera
+    listen(sockfd,CANTIDAD_EXPERIMENTO); // Se setea la cantidad de conexiones en espera
     clilen = sizeof(cli_addr);
     newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *)&clilen);
     if (newsockfd < 0)
         error("ERROR on accept");
-
-    /*Reserva de memoria ---------*/
-    char *buffer = (char *)malloc(cantidad_bytes * sizeof(char));
-    bzero(buffer, cantidad_bytes);
-    /*---------------------------*/
     
-    int bytes_recibidos = 0; 
-    char respuesta[] = "OK";
 
-    while (bytes_recibidos < cantidad_bytes) {
-        n = read(newsockfd, &buffer[bytes_recibidos], cantidad_bytes - bytes_recibidos);
-        if (n < 0)
-            error("ERROR reading from socket");
-        bytes_recibidos += n;
+    for (int i = 0; i < CANTIDAD_EXPERIMENTO; i++){
+        /*Reserva de memoria ---------*/
+        char *buffer = (char *)malloc(cantidad_bytes * sizeof(char));
+        bzero(buffer, cantidad_bytes);
+        /*---------------------------*/
+        
+        int bytes_recibidos = 0; 
+        char respuesta[] = "OK";
+    
+        while (bytes_recibidos < cantidad_bytes) {
+            n = read(newsockfd, &buffer[bytes_recibidos], cantidad_bytes - bytes_recibidos);
+            bytes_recibidos += n;
+        }
+        
+        n = write(newsockfd, respuesta, strlen(respuesta));
+        
+        free(buffer);
     }
-    
-    n = write(newsockfd, respuesta, strlen(respuesta));
-    if (n < 0)
-        error("ERROR writing OK to socket");
 
     close(newsockfd);
     close(sockfd);
-    free(buffer);
     return 0;
 }
 

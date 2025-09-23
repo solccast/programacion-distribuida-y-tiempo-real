@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <sys/time.h>
 
+#define CANTIDAD_EXPERIMENTO 10 
 double dwalltime();
 
 void error(char *msg)
@@ -16,12 +17,21 @@ void error(char *msg)
     exit(1);
 }
 
+double calcularPromedio(double *tiempos, int cantidad) {
+    double suma = 0.0;
+    for (int i = 0; i < cantidad; i++) {
+        suma += tiempos[i];
+    }
+    return suma / cantidad;
+}
+
 int main(int argc, char *argv[])
 {
     int sockfd, portno, n;
     struct sockaddr_in serv_addr;
     struct hostent *server;
-    double t0, t1, t2, t3, tiempo_write, tiempo_read; 
+    double t0, t1, t2, t3, tiempo_write, tiempo_read, tiempo_acumulado = 0.0, elapsed; 
+    double tiempos[CANTIDAD_EXPERIMENTO];
 
     if (argc < 4) {
        fprintf(stderr,"usage %s hostname port cantidad_bytes\n", argv[0]);
@@ -61,26 +71,20 @@ int main(int argc, char *argv[])
 
     char respuesta[10];
     /* Envío del mensaje al socket */
-    t0 = dwalltime(); 
-    n = write(sockfd, &buffer[0], cantidad_bytes);
-    t1 = dwalltime();
     
-    if (n < 0)
-        error("ERROR writing to socket");
-
-    // Esperar respuesta del servidor
-    t2 = dwalltime();
-    n = read(sockfd, respuesta, sizeof(respuesta)-1);
-    t3 = dwalltime();
-
-    if (n < 0)
-        error("ERROR reading OK from socket");
+    for (int i = 0; i < CANTIDAD_EXPERIMENTO; i++){
+        t0 = dwalltime(); 
+        n = write(sockfd, &buffer[0], cantidad_bytes);
+        // Esperar respuesta del servidor
+        n = read(sockfd, respuesta, sizeof(respuesta)-1);
+        t1 = dwalltime();
+        tiempos[i] = t1 - t0;
+        respuesta[n] = '\0';
+        printf("| CLIENTE:: | %d | %f | %f | %s |\n", cantidad_bytes, tiempos[i], tiempos[i]/2.0, respuesta);
+    }
     
-    tiempo_write = t2 - t0;
-    tiempo_read = t3 - t2;
-    
-    respuesta[n] = '\0';
-    printf("| CLIENTE:: | %d |  %f | %f | %s |\n", cantidad_bytes, tiempo_write, tiempo_read, respuesta);
+    double promedio = calcularPromedio(tiempos, CANTIDAD_EXPERIMENTO);
+    printf("Promedio de tiempo para %d bytes: %f segundos\n", cantidad_bytes, promedio);
 
     close(sockfd);
     free(buffer);
