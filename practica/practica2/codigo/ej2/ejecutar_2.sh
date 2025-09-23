@@ -2,7 +2,7 @@
 
 # Configuración de host y puerto
 HOST="localhost"
-PORT=12345
+PORT=5001
 RESULT_FILE="resultados.md"
 # Lista de tamaños de datos a probar
 SIZES=(10 100 1000 10000 100000 1000000)
@@ -27,8 +27,8 @@ echo "" >> $RESULT_FILE
  
 for SIZE in "${SIZES[@]}"; do
     echo "Probando con tamaño: $SIZE"
-    echo "| Modelo | Tamaño (bytes) | Tiempo (s) | Etc. |" >> $RESULT_FILE
-    echo "| ------ | -------------- | --------- | --- |" >> $RESULT_FILE
+    echo "| Modelo | Tamaño (bytes) | Tiempo Write(s) | Tiempo Read (s) | Notas |" >> $RESULT_FILE
+    echo "| ------ | -------------- | --------------- | --------------- |-------|" >> $RESULT_FILE
     # Inicia el servidor en segundo plano
     ./server_prueba $PORT $SIZE >> $RESULT_FILE & # Ejecución en segundo plano
     sleep 3 # Espera a que el servidor esté listo

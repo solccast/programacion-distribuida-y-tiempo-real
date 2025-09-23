@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     int sockfd, portno, n;
     struct sockaddr_in serv_addr;
     struct hostent *server;
-    double t0, t1, tiempo; 
+    double t0, t1, t2, t3, tiempo_write, tiempo_read; 
 
     if (argc < 4) {
        fprintf(stderr,"usage %s hostname port cantidad_bytes\n", argv[0]);
@@ -59,21 +59,28 @@ int main(int argc, char *argv[])
         buffer[j] = 'A'; // Nos aseguramos que el buffer no esté vacío
     }
 
+    char respuesta[10];
     /* Envío del mensaje al socket */
     t0 = dwalltime(); 
-    int bytes_enviados = 0; 
-    int cantidad_conexiones = 0;
-    while (bytes_enviados < cantidad_bytes) {
-        n = write(sockfd, &buffer[bytes_enviados], cantidad_bytes - bytes_enviados);
-        if (n < 0)
-            error("ERROR writing to socket");
-        bytes_enviados += n;
-        cantidad_conexiones++;
-    }
+    n = write(sockfd, &buffer[0], cantidad_bytes);
     t1 = dwalltime();
+    
+    if (n < 0)
+        error("ERROR writing to socket");
 
-    tiempo = t1 - t0;
-    printf("| CLIENTE:: | %d |  %f | %d envío(s) |\n", cantidad_bytes, tiempo, cantidad_conexiones);
+    // Esperar respuesta del servidor
+    t2 = dwalltime();
+    n = read(sockfd, respuesta, sizeof(respuesta)-1);
+    t3 = dwalltime();
+
+    if (n < 0)
+        error("ERROR reading OK from socket");
+    
+    tiempo_write = t2 - t0;
+    tiempo_read = t3 - t2;
+    
+    respuesta[n] = '\0';
+    printf("| CLIENTE:: | %d |  %f | %f | %s |\n", cantidad_bytes, tiempo_write, tiempo_read, respuesta);
 
     close(sockfd);
     free(buffer);

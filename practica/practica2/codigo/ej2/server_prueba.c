@@ -41,6 +41,9 @@ int main(int argc, char *argv[])
     serv_addr.sin_addr.s_addr = INADDR_ANY;
     serv_addr.sin_port = htons(portno);
 
+    int optval = 1;
+    setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
+
     if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
         error("ERROR on binding");
 
@@ -54,21 +57,20 @@ int main(int argc, char *argv[])
     char *buffer = (char *)malloc(cantidad_bytes * sizeof(char));
     bzero(buffer, cantidad_bytes);
     /*---------------------------*/
-
-    t0 = dwalltime();
+    
     int bytes_recibidos = 0; 
-    int contador = 0;
+    char respuesta[] = "OK";
+
     while (bytes_recibidos < cantidad_bytes) {
         n = read(newsockfd, &buffer[bytes_recibidos], cantidad_bytes - bytes_recibidos);
         if (n < 0)
             error("ERROR reading from socket");
         bytes_recibidos += n;
-        contador++;
     }
-    t1 = dwalltime();
-
-    tiempo = t1 - t0;
-    printf("| SERVER:: | %d | %f | %d lecturas|\n", bytes_recibidos, tiempo, contador);
+    
+    n = write(newsockfd, respuesta, strlen(respuesta));
+    if (n < 0)
+        error("ERROR writing OK to socket");
 
     close(newsockfd);
     close(sockfd);
