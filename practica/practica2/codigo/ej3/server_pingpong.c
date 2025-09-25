@@ -7,7 +7,8 @@
 #include <netinet/in.h>
 #include <sys/time.h>
 
-double dwalltime(); 
+double dwalltime();
+#define CANTIDAD_EXPERIMENTO 10
 
 
 void error(char *msg)
@@ -85,7 +86,7 @@ int main(int argc, char *argv[])
     close(newsockfd);
     close(sockfd);
 
-    double tiempo_total = t1 - t0; 
+    double tiempo_total = (t1 - t0) * 1000; // Convertir a milisegundos 
     double one_way_tiempo = tiempo_total / 2.0;
     printf("| SERVER:: | %d | %f | %f |\n", cantidad_bytes, tiempo_total, one_way_tiempo);
 

@@ -78,13 +78,13 @@ int main(int argc, char *argv[])
         // Esperar respuesta del servidor
         n = read(sockfd, respuesta, sizeof(respuesta)-1);
         t1 = dwalltime();
-        tiempos[i] = t1 - t0;
+        tiempos[i] = (t1 - t0) * 1000; // Convertir a milisegundos
         respuesta[n] = '\0';
         printf("| CLIENTE:: | %d | %f | %f | %s |\n", cantidad_bytes, tiempos[i], tiempos[i]/2.0, respuesta);
     }
     
     double promedio = calcularPromedio(tiempos, CANTIDAD_EXPERIMENTO);
-    printf("Promedio de tiempo para %d bytes: %f segundos\n", cantidad_bytes, promedio);
+    printf("Promedio de tiempo para %d bytes: %f milisegundos\n", cantidad_bytes, promedio);
 
     close(sockfd);
     free(buffer);
