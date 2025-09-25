@@ -2,7 +2,7 @@
 
 # Configuración de host y puerto
 HOST="localhost"
-PORT=8080
+PORT=8082
 RESULT_FILE="resultados_pingpong.md"
 # Lista de tamaños de datos a probar
 SIZES=(10 100 1000 10000 100000 1000000)
@@ -36,7 +36,7 @@ for SIZE in "${SIZES[@]}"; do
     # Ejecuta el cliente y guarda la salida
     ./client_pingpong $HOST $PORT $SIZE >> $RESULT_FILE
     echo "" >> $RESULT_FILE
-    sleep 20
+    sleep 5
     done
 
 echo "Experimento finalizado. Resultados en $RESULT_FILE"
