@@ -10,11 +10,20 @@
 #include <sys/time.h>
 
 double dwalltime();
+#define CANTIDAD_EXPERIMENTO 50
 
 void error(char *msg)
 {
     perror(msg);
     exit(1);
+}
+
+double calcularPromedio(double *tiempos, int cantidad) {
+    double suma = 0.0;
+    for (int i = 0; i < cantidad; i++) {
+        suma += tiempos[i];
+    }
+    return suma / cantidad;
 }
 
 int main(int argc, char *argv[])
@@ -23,6 +32,7 @@ int main(int argc, char *argv[])
     struct sockaddr_in serv_addr;
     struct hostent *server;
     double t0, t1;
+    double tiempos[CANTIDAD_EXPERIMENTO];
 
     if (argc < 4) {
        fprintf(stderr,"usage %s hostname port cantidad_bytes\n", argv[0]);
@@ -63,30 +73,30 @@ int main(int argc, char *argv[])
         buffer[j] = 'A';
     }
 
-    /* Envío del mensaje al socket y espera de respuesta (ping-pong) */
-    t0 = dwalltime();
+    for (int i = 0; i < CANTIDAD_EXPERIMENTO; i++){
+        t0 = dwalltime();
+        n = write(sockfd, buffer, cantidad_bytes);
 
-    n = write(sockfd, buffer, cantidad_bytes);
-    if (n < 0)
-        error("ERROR writing to socket");
-
-    // Esperar la respuesta del servidor
-    int bytes_recibidos = 0;
-    int fragmentos_recibidos = 0;
-    while (bytes_recibidos < cantidad_bytes) {
-        n = read(sockfd, &buffer[bytes_recibidos], cantidad_bytes - bytes_recibidos);
         if (n < 0)
-            error("ERROR reading from socket");
-        bytes_recibidos += n;
-        fragmentos_recibidos++;
+            error("ERROR writing to socket");    
+
+        // Esperar la respuesta del servidor
+        int bytes_recibidos = 0;
+        while (bytes_recibidos < cantidad_bytes) {
+            n = read(sockfd, &buffer[bytes_recibidos], cantidad_bytes - bytes_recibidos);
+            if (n < 0)
+                error("ERROR reading from socket");
+            bytes_recibidos += n;
+        }
+        t1 = dwalltime();
+        double tiempo_total = (t1 - t0) * 1000.0; // Tiempo en milisegundos
+        tiempos[i] = tiempo_total; // Guardar el tiempo total del ping-pong
+        printf("| CLIENTE:: | % d | %f |\n", cantidad_bytes, tiempo_total);
     }
-    
-    t1 = dwalltime();
 
-    double tiempo_total = (t1 - t0) * 1000.0; // Tiempo en milisegundos
-    double one_way_tiempo = tiempo_total / 2.0;
-
-    printf("| CLIENTE:: | %d | %f | %f |\n", cantidad_bytes, tiempo_total, one_way_tiempo);
+    double one_way_tiempo = calcularPromedio(tiempos, CANTIDAD_EXPERIMENTO) / 2.0;
+    /* Envío del mensaje al socket y espera de respuesta (ping-pong) */
+    printf("| [PROMEDIO FINAL] CLIENTE:: | %d | %f | %f |\n", cantidad_bytes, calcularPromedio(tiempos, CANTIDAD_EXPERIMENTO), one_way_tiempo);
 
     close(sockfd);
     free(buffer);

@@ -9,7 +9,7 @@
 #include <sys/time.h>
 
 double dwalltime();
-#define CANTIDAD_EXPERIMENTO 10
+#define CANTIDAD_EXPERIMENTO 50
 
 
 void error(char *msg)
@@ -21,7 +21,6 @@ void error(char *msg)
 int main(int argc, char *argv[])
 {
     int sockfd, newsockfd, portno, clilen, n;
-    double t0, t1, tiempo;
     struct sockaddr_in serv_addr, cli_addr;
     if (argc < 3) {
         fprintf(stderr,"usage %s port cantidad_bytes\n", argv[0]);
@@ -74,33 +73,27 @@ int main(int argc, char *argv[])
     char *buffer = (char *)malloc(cantidad_bytes * sizeof(char));
     bzero(buffer, cantidad_bytes);
     
-    /*Recibimiento de datos*/
-    int bytes_recibidos = 0;
-    int fragmentos_recibidos = 0;
 
-    t0 = dwalltime();
-    while (bytes_recibidos < cantidad_bytes) {
-        n = read(newsockfd, &buffer[bytes_recibidos], cantidad_bytes - bytes_recibidos);
+    for (int i = 0; i < CANTIDAD_EXPERIMENTO; i++){
+        /*Recibimiento de datos*/
+        int bytes_recibidos = 0;
+
+        while (bytes_recibidos < cantidad_bytes) {
+            n = read(newsockfd, &buffer[bytes_recibidos], cantidad_bytes - bytes_recibidos);
+            if (n < 0)
+                error("ERROR reading from socket");
+            bytes_recibidos += n;
+        }
+    
+        // Reenviar los datos recibidos al cliente (ping-pong)
+        n = write(newsockfd, buffer, bytes_recibidos);
         if (n < 0)
-            error("ERROR reading from socket");
-        bytes_recibidos += n;
-        fragmentos_recibidos++;
+            error("ERROR writing to socket");
+    
     }
-
-    // Reenviar los datos recibidos al cliente (ping-pong)
-    n = write(newsockfd, buffer, bytes_recibidos);
-    if (n < 0)
-        error("ERROR writing to socket");
-
-    t1 = dwalltime();
     close(newsockfd);
 
     close(sockfd);
-
-    double tiempo_total = (t1 - t0) * 1000; // Convertir a milisegundos 
-    double one_way_tiempo = tiempo_total / 2.0;
-    printf("| SERVER:: | %d | %f | %f |\n", cantidad_bytes, tiempo_total, one_way_tiempo);
-
     free(buffer);
     remove("server_ready.txt");
     return 0;

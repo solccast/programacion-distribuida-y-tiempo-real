@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 # Configuración de host y puerto
@@ -7,9 +6,7 @@ PORT=8080
 RESULT_FILE="resultados_pingpong.md"
 # Lista de tamaños de datos a probar
 SIZES=(10 100 1000 10000 100000 1000000)
-
 # Compilación de los programas
-
 gcc server_pingpong.c -o server_pingpong
 if [ $? -ne 0 ]; then
     echo "Error al compilar server_pingpong.c"
@@ -31,7 +28,7 @@ echo "" >> $RESULT_FILE
 for SIZE in "${SIZES[@]}"; do
     echo "Probando con tamaño: $SIZE"
     # Inicia el servidor en segundo plano
-    echo "| Modelo | Tamaño (bytes) | Tiempo Total (s) | One way (s) |" >> $RESULT_FILE
+    echo "| Modelo | Tamaño (bytes) | Tiempo Total (ms) | One way (s) |" >> $RESULT_FILE
     echo "|--------|----------------|------------------|-------------|" >> $RESULT_FILE
     ./server_pingpong $PORT $SIZE >> $RESULT_FILE &
     # Ejecuta el cliente y guarda la salida
