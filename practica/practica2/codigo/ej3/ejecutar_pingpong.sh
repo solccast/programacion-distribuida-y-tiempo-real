@@ -1,8 +1,9 @@
+
 #!/bin/bash
 
 # Configuración de host y puerto
 HOST="localhost"
-PORT=8082
+PORT=8080
 RESULT_FILE="resultados_pingpong.md"
 # Lista de tamaños de datos a probar
 SIZES=(10 100 1000 10000 100000 1000000)
@@ -34,9 +35,11 @@ for SIZE in "${SIZES[@]}"; do
     echo "|--------|----------------|------------------|-------------|" >> $RESULT_FILE
     ./server_pingpong $PORT $SIZE >> $RESULT_FILE &
     # Ejecuta el cliente y guarda la salida
+    while [ ! -f server_ready.txt ]; do
+        sleep 0.1
+    done
     ./client_pingpong $HOST $PORT $SIZE >> $RESULT_FILE
     echo "" >> $RESULT_FILE
-    sleep 5
     done
 
 echo "Experimento finalizado. Resultados en $RESULT_FILE"

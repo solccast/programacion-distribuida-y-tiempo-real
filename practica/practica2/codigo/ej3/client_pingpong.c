@@ -2,6 +2,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <netinet/tcp.h> 
 #include <netdb.h>
 #include <string.h>
 #include <unistd.h>
@@ -34,6 +35,9 @@ int main(int argc, char *argv[])
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0)
         error("ERROR opening socket");
+    
+    int flag = 1;
+    setsockopt(sockfd, IPPROTO_TCP, TCP_NODELAY, &flag, sizeof(flag));
 
     /*Se toma la dirección del servidor de los argumentos*/
     server = gethostbyname(argv[1]); 
@@ -60,14 +64,11 @@ int main(int argc, char *argv[])
     }
 
     /* Envío del mensaje al socket y espera de respuesta (ping-pong) */
-    int bytes_enviados = 0;
     t0 = dwalltime();
-    while (bytes_enviados < cantidad_bytes) {
-        n = write(sockfd, &buffer[bytes_enviados], cantidad_bytes - bytes_enviados);
-        if (n < 0)
-            error("ERROR writing to socket");
-        bytes_enviados += n;
-    }
+
+    n = write(sockfd, buffer, cantidad_bytes);
+    if (n < 0)
+        error("ERROR writing to socket");
 
     // Esperar la respuesta del servidor
     int bytes_recibidos = 0;
@@ -82,10 +83,10 @@ int main(int argc, char *argv[])
     
     t1 = dwalltime();
 
-    double tiempo_total = (t1 - t0);
+    double tiempo_total = (t1 - t0) * 1000.0; // Tiempo en milisegundos
     double one_way_tiempo = tiempo_total / 2.0;
 
-    printf("| CLIENTE:: | %d | %f | %f | %f |\n", cantidad_bytes, tiempo_total, one_way_tiempo);
+    printf("| CLIENTE:: | %d | %f | %f |\n", cantidad_bytes, tiempo_total, one_way_tiempo);
 
     close(sockfd);
     free(buffer);
