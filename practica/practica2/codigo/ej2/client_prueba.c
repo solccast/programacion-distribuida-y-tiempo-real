@@ -92,7 +92,8 @@ int main(int argc, char *argv[])
 
     double promedio_write = calcularPromedio(tiempos_write, CANTIDAD_EXPERIMENTO);
     double promedio_read = calcularPromedio(tiempos_read, CANTIDAD_EXPERIMENTO);
-    printf("Promedio de tiempo write y read para %d bytes: %f milisegundos, %f milisegundos\n", cantidad_bytes, promedio_write, promedio_read);
+    printf("| [PROMEDIO - FINAL] CLIENTE [cantidad_bytes, promedio write, promedio read]:: | %d | %f | %f |\n", cantidad_bytes, promedio_write, promedio_read);
+    //printf("Promedio de tiempo write y read para %d bytes: %f milisegundos, %f milisegundos\n", cantidad_bytes, promedio_write, promedio_read);
 
     close(sockfd);
     free(buffer);
