@@ -1,0 +1,56 @@
+Vagrant.configure("2") do |config|
+  (1..2).each do |i|
+    config.vm.define "vm#{i}" do |machine|
+      machine.vm.box = "hashicorp/bionic64"
+      machine.vm.network "private_network", type: "dhcp"
+      machine.vm.hostname = "vm#{i}"
+
+      # Instalamos dependencias básicas
+      machine.vm.provision "shell", inline: <<-SHELL
+        apt-get update
+        apt-get install -y net-tools build-essential gcc make netcat
+      SHELL
+
+      # Ejecucion particular de cada VM 
+      if i == 1
+        # ----------- Ping Pong Servidor -----------
+        machine.vm.provision "shell", inline: <<-SHELL
+          echo "=== VM1: Ping Pong Servidor ==="
+          sed -i 's/\r$//' /vagrant/server/run_server.sh
+          chmod +x /vagrant/server/run_server.sh
+          # Obtenemos la IP que se le asigno a esta VM y guardamos para que el cliente la use
+          SERVER_IP=$(hostname -I | awk '{print $2}')
+          echo $SERVER_IP > /vagrant/server_ip.txt
+          echo "Servidor escuchará en IP: $SERVER_IP"
+
+          # Ejecutar servidor
+          nohup /vagrant/server/run_server.sh > /vagrant/server/server.log 2>&1 &
+        SHELL
+      else
+        # ----------- Ping Pong Cliente -----------
+        machine.vm.provision "shell", inline: <<-SHELL
+          echo "=== VM2: Ping Pong Cliente ==="
+          # Esperar que el archivo de IP del servidor exista
+
+          while [ ! -f /vagrant/server_ip.txt ]; do
+            echo "Esperando IP del servidor..."
+            sleep 1
+          done
+          SERVER_IP=$(cat /vagrant/server_ip.txt)
+          echo "IP del servidor detectada: $SERVER_IP"
+
+          # Esperar a que el servidor esté en estado listen
+          until nc -z $SERVER_IP 8080; do
+            echo "Esperando a que el servidor este en estado listen..."
+            sleep 1
+          done
+
+          # Ejecutamos cliente
+          sed -i 's/\r$//' /vagrant/cliente/run_client.sh
+          chmod +x /vagrant/cliente/run_client.sh
+          /vagrant/cliente/run_client.sh $SERVER_IP > /vagrant/cliente/client_results.txt 2>&1 &
+        SHELL
+      end
+    end
+  end
+end
