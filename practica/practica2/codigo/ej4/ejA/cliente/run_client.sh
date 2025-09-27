@@ -3,7 +3,7 @@
 # Ojo, el host se tiene que pasar como argumento
 HOST=$1
 PORT=8080
-RESULT_FILE="resultados.md"
+RESULT_FILE="/vagrant/resultados_ej2.txt"
 SIZES=(10 100 1000 10000 100000 1000000)
 
 if [ -z "$HOST" ]; then
@@ -11,8 +11,6 @@ if [ -z "$HOST" ]; then
     exit 1
 fi
 
-cp client_prueba.c /tmp/
-cd /tmp
 
 gcc client_prueba.c -o client_prueba
 
@@ -21,7 +19,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "# Resultados del experimento cliente-servidor" > $RESULT_FILE
+echo "# Resultados del experimento cliente-servidor - EJ 2" > $RESULT_FILE
 echo "Host: $HOST, Puerto: $PORT" >> $RESULT_FILE
 echo "" >> $RESULT_FILE
 

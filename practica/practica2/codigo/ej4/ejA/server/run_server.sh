@@ -5,10 +5,6 @@ PORT=8080
 # Lista de tamaños de datos a probar
 SIZES=(10 100 1000 10000 100000 1000000)
 
-# Compilación servidor
-cp server_prueba.c /tmp/
-cd /tmp
-
 gcc server_prueba.c -o server_prueba
 
 if [ $? -ne 0 ]; then
