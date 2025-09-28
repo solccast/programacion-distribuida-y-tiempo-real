@@ -8,8 +8,8 @@ Vagrant.configure("2") do |config|
       # Instalamos dependencias básicas
       machine.vm.provision "shell", inline: <<-SHELL
         apt-get update
-        apt-get install -y net-tools build-essential gcc make netcat debconf-utils joe zip libc-dev-bin default-jdk
-      SHELL
+        apt-get install -y net-tools libc-dev-bin build-essential
+        SHELL
 
       # Ejecucion particular de cada VM 
       if i == 1
