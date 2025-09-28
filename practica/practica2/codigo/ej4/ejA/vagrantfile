@@ -8,16 +8,25 @@ Vagrant.configure("2") do |config|
       # Instalamos dependencias básicas
       machine.vm.provision "shell", inline: <<-SHELL
         apt-get update
-        apt-get install -y net-tools build-essential gcc make netcat
+        apt-get install -y net-tools build-essential gcc make netcat debconf-utils joe zip libc-dev-bin default-jdk
       SHELL
 
       # Ejecucion particular de cada VM 
       if i == 1
         # ----------- Ping Pong Servidor -----------
         machine.vm.provision "shell", path: "setup_server.sh" 
+        machine.vm.provision "shell", inline: <<-SHELL
+        #Codigo bash
+        nohup /home/vagrant/run_server.sh > /vagrant/server.log 2>&1 &
+        SHELL
       else
         # ----------- Ping Pong Cliente -----------
         machine.vm.provision "shell", path: "setup_client.sh"
+        machine.vm.provision "shell", inline: <<-SHELL
+        #Codigo bash
+        SERVER_IP=$(cat /vagrant/server_ip.txt)
+        /home/vagrant/run_client.sh $SERVER_IP > /vagrant/client_results.txt 2>&1 &
+        SHELL
       end
     end
   end

@@ -16,9 +16,9 @@ until nc -z $SERVER_IP 8080; do
 done
 
 # Ejecutamos cliente
-cp /vagrant/cliente/run_client.sh /home/vagrant/run_client.sh
-cp /vagrant/cliente/client_prueba.c /home/vagrant/client_prueba.c
+cp /vagrant/run_client.sh /home/vagrant/run_client.sh
+cp /vagrant/client_prueba.c /home/vagrant/client_prueba.c
 sed -i 's/\r$//' /home/vagrant/run_client.sh
 
+gcc /home/vagrant/client_prueba.c -o /home/vagrant/client_prueba
 chmod +x /home/vagrant/run_client.sh
-/home/vagrant/run_client.sh $SERVER_IP > /vagrant/cliente/client_results.txt 2>&1 &
