@@ -11,10 +11,6 @@ if [ -z "$HOST" ]; then
     exit 1
 fi
 
-./client_prueba $HOST $PORT 1 &
-CLIENT_PID=$!
-kill $CLIENT_PID
-
 echo "# Resultados del experimento cliente-servidor - EJ 2" > $RESULT_FILE
 echo "Host: $HOST, Puerto: $PORT" >> $RESULT_FILE
 echo "" >> $RESULT_FILE

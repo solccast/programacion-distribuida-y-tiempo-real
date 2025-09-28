@@ -17,7 +17,11 @@ Vagrant.configure("2") do |config|
         machine.vm.provision "shell", path: "setup_server.sh" 
         machine.vm.provision "shell", inline: <<-SHELL
         #Codigo bash
-        nohup /home/vagrant/run_server.sh > /vagrant/server.log 2>&1 &
+        SCRIPT="/home/vagrant/run_server.sh"
+        LOG="/vagrant/server.$(date +%s).log"
+        cd /home/vagrant
+        nohup /home/vagrant/run_server.sh >>"$LOG" 2>&1 &
+        echo "Ejecución programada"
         SHELL
       else
         # ----------- Ping Pong Cliente -----------
@@ -25,7 +29,11 @@ Vagrant.configure("2") do |config|
         machine.vm.provision "shell", inline: <<-SHELL
         #Codigo bash
         SERVER_IP=$(cat /vagrant/server_ip.txt)
-        /home/vagrant/run_client.sh $SERVER_IP > /vagrant/client_results.txt 2>&1 &
+        SCRIPT="/home/vagrant/run_client.sh"
+        LOG="/vagrant/client_results.txt" 
+        cd /home/vagrant
+        nohup /home/vagrant/run_client.sh $SERVER_IP >>"$LOG" 2>&1 &
+        echo "Ejecución programada"
         SHELL
       end
     end
