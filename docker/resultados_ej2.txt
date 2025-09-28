@@ -1,0 +1,87 @@
+# Resultados del experimento cliente-servidor - EJ 2
+Host: 192.168.56.41, Puerto: 8080
+
+| Modelo | Tamaño (bytes) | Tiempo write (ms) | Tiempo read (ms) | Resultado |
+| ------ | -------------- | ----------------- | ---------------- | --------- |
+| CLIENTE:: | 10 | 2.470016 | 312114.886999 |  |
+| CLIENTE:: | 10 | 0.217915 | 0.003099 |  |
+| CLIENTE:: | 10 | 0.409126 | 0.004053 |  |
+| CLIENTE:: | 10 | 0.019073 | 0.000954 |  |
+| CLIENTE:: | 10 | 0.013113 | 0.000954 |  |
+| CLIENTE:: | 10 | 0.013113 | 0.000954 |  |
+| CLIENTE:: | 10 | 0.488997 | 0.004053 |  |
+| CLIENTE:: | 10 | 0.033140 | 0.001907 |  |
+| CLIENTE:: | 10 | 0.044107 | 0.003099 |  |
+| CLIENTE:: | 10 | 0.035048 | 0.001907 |  |
+| [PROMEDIO - FINAL] CLIENTE [cantidad_bytes, promedio write, promedio read]:: | 10 | 0.374365 | 31211.490798 |
+
+| Modelo | Tamaño (bytes) | Tiempo write (ms) | Tiempo read (ms) | Resultado |
+| ------ | -------------- | ----------------- | ---------------- | --------- |
+| CLIENTE:: | 100 | 0.211000 | 6.283045 | OK |
+| CLIENTE:: | 100 | 0.134945 | 2.800941 | OK |
+| CLIENTE:: | 100 | 0.185013 | 2.546072 | OK |
+| CLIENTE:: | 100 | 0.055790 | 2.056122 | OK |
+| CLIENTE:: | 100 | 0.170231 | 1.809835 | OK |
+| CLIENTE:: | 100 | 0.416994 | 1.770973 | OK |
+| CLIENTE:: | 100 | 0.086069 | 1.884937 | OK |
+| CLIENTE:: | 100 | 0.056982 | 1.894951 | OK |
+| CLIENTE:: | 100 | 0.079155 | 1.663923 | OK |
+| CLIENTE:: | 100 | 0.081062 | 1.749992 | OK |
+| [PROMEDIO - FINAL] CLIENTE [cantidad_bytes, promedio write, promedio read]:: | 100 | 0.147724 | 2.446079 |
+
+| Modelo | Tamaño (bytes) | Tiempo write (ms) | Tiempo read (ms) | Resultado |
+| ------ | -------------- | ----------------- | ---------------- | --------- |
+| CLIENTE:: | 1000 | 0.234842 | 5.092144 | OK |
+| CLIENTE:: | 1000 | 0.068188 | 2.682924 | OK |
+| CLIENTE:: | 1000 | 0.098944 | 2.480030 | OK |
+| CLIENTE:: | 1000 | 0.085115 | 1.993895 | OK |
+| CLIENTE:: | 1000 | 0.144005 | 3.885984 | OK |
+| CLIENTE:: | 1000 | 0.072002 | 3.642797 | OK |
+| CLIENTE:: | 1000 | 0.065088 | 3.206015 | OK |
+| CLIENTE:: | 1000 | 0.119925 | 2.927065 | OK |
+| CLIENTE:: | 1000 | 0.097990 | 2.258062 | OK |
+| CLIENTE:: | 1000 | 0.100851 | 3.139019 | OK |
+| [PROMEDIO - FINAL] CLIENTE [cantidad_bytes, promedio write, promedio read]:: | 1000 | 0.108695 | 3.130794 |
+
+| Modelo | Tamaño (bytes) | Tiempo write (ms) | Tiempo read (ms) | Resultado |
+| ------ | -------------- | ----------------- | ---------------- | --------- |
+| CLIENTE:: | 10000 | 0.319958 | 5.410910 | OK |
+| CLIENTE:: | 10000 | 0.104904 | 2.892017 | OK |
+| CLIENTE:: | 10000 | 0.118017 | 3.296852 | OK |
+| CLIENTE:: | 10000 | 0.085115 | 2.609015 | OK |
+| CLIENTE:: | 10000 | 0.184059 | 3.263950 | OK |
+| CLIENTE:: | 10000 | 0.168085 | 3.078938 | OK |
+| CLIENTE:: | 10000 | 0.133991 | 2.882004 | OK |
+| CLIENTE:: | 10000 | 0.180006 | 2.948046 | OK |
+| CLIENTE:: | 10000 | 0.128031 | 2.377987 | OK |
+| CLIENTE:: | 10000 | 0.111818 | 2.787113 | OK |
+| [PROMEDIO - FINAL] CLIENTE [cantidad_bytes, promedio write, promedio read]:: | 10000 | 0.153399 | 3.154683 |
+
+| Modelo | Tamaño (bytes) | Tiempo write (ms) | Tiempo read (ms) | Resultado |
+| ------ | -------------- | ----------------- | ---------------- | --------- |
+| CLIENTE:: | 100000 | 2.141953 | 14.611006 | OK |
+| CLIENTE:: | 100000 | 0.181913 | 6.190062 | OK |
+| CLIENTE:: | 100000 | 0.286102 | 4.483938 | OK |
+| CLIENTE:: | 100000 | 0.154018 | 5.792141 | OK |
+| CLIENTE:: | 100000 | 0.133038 | 6.913900 | OK |
+| CLIENTE:: | 100000 | 0.128031 | 7.496119 | OK |
+| CLIENTE:: | 100000 | 0.267982 | 4.997969 | OK |
+| CLIENTE:: | 100000 | 0.147104 | 4.734993 | OK |
+| CLIENTE:: | 100000 | 0.152111 | 5.881071 | OK |
+| CLIENTE:: | 100000 | 0.262022 | 5.177021 | OK |
+| [PROMEDIO - FINAL] CLIENTE [cantidad_bytes, promedio write, promedio read]:: | 100000 | 0.385427 | 6.627822 |
+
+| Modelo | Tamaño (bytes) | Tiempo write (ms) | Tiempo read (ms) | Resultado |
+| ------ | -------------- | ----------------- | ---------------- | --------- |
+| CLIENTE:: | 1000000 | 2.069950 | 22.083998 | OK |
+| CLIENTE:: | 1000000 | 0.519037 | 23.411989 | OK |
+| CLIENTE:: | 1000000 | 1.501083 | 18.787861 | OK |
+| CLIENTE:: | 1000000 | 0.897169 | 17.937899 | OK |
+| CLIENTE:: | 1000000 | 0.612020 | 19.369125 | OK |
+| CLIENTE:: | 1000000 | 0.765085 | 18.399954 | OK |
+| CLIENTE:: | 1000000 | 0.953913 | 17.089128 | OK |
+| CLIENTE:: | 1000000 | 0.895023 | 16.880035 | OK |
+| CLIENTE:: | 1000000 | 0.887871 | 17.494917 | OK |
+| CLIENTE:: | 1000000 | 0.679016 | 17.576933 | OK |
+| [PROMEDIO - FINAL] CLIENTE [cantidad_bytes, promedio write, promedio read]:: | 1000000 | 0.978017 | 18.903184 |
+

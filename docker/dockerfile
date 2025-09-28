@@ -1,0 +1,25 @@
+# Imagen base de Ubuntu liviana
+FROM ubuntu:24.04
+
+# Evitar prompts y achicar la imagen
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    gcc \
+    make \
+    gdb \
+    netcat-openbsd \
+    iproute2 \
+    iputils-ping \
+    ca-certificates \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Carpeta de trabajo para tu código C
+WORKDIR /app
+
+# (Opcional) Copiá tu código si ya está en el contexto
+# COPY . /app
+
+# Comando por defecto: shell interactiva
+CMD ["/bin/bash"]
