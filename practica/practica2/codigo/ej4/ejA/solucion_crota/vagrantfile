@@ -1,0 +1,24 @@
+Vagrant.configure("2") do |config|
+  (1..2).each do |i|
+    config.vm.define "vm#{i}" do |machine|
+      machine.vm.box = "hashicorp/bionic64"
+      machine.vm.hostname = "vm#{i}"
+
+      # Instalamos dependencias básicas
+      machine.vm.provision "shell", inline: <<-SHELL
+        apt-get update
+        apt-get install -y net-tools libc-dev-bin build-essential
+        SHELL
+        
+      if i == 1
+        # ----------- Ping Pong Servidor -----------
+        machine.vm.network "private_network", ip: "192.168.56.10"
+        machine.vm.provision "shell", path: "setup_server.sh" 
+      else
+        # ----------- Ping Pong Cliente -----------
+        machine.vm.network "private_network", ip: "192.168.56.11"
+        machine.vm.provision "shell", path: "setup_client.sh"
+      end
+    end
+  end
+end
