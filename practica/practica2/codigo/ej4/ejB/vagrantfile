@@ -1,7 +1,7 @@
 Vagrant.configure("2") do |config|
     config.vm.define "vm1" do |machine|
         machine.vm.box = "hashicorp/bionic64"
-        machine.vm.network "private_network", type: "dhcp"
+        machine.vm.network "private_network", ip: "192.168.56.10"
         machine.vm.hostname = "vm1"
     
         # Instalamos dependencias básicas
@@ -13,15 +13,10 @@ Vagrant.configure("2") do |config|
 
             SERVER_IP=$(hostname -I | awk '{print $2}')
             echo $SERVER_IP > /vagrant/server_ip.txt
-        
-            # Compilar el servidor
-            gcc /vagrant/server_prueba.c -o /home/vagrant/server_prueba    
             cp /vagrant/run_server.sh /home/vagrant/run_server.sh
-            sed -i 's/\r$//' /home/vagrant/run_server.sh # Eliminar caracteres de fin de línea de Windows
-            chmod +x /home/vagrant/run_server.sh
-            nohup /home/vagrant/run_server.sh > /vagrant/server.log 2>&1 &
+            sed -i 's/\r$//' /home/vagrant/run_server.sh 
+            chmod +x /home/vagrant/run_server.sh 
         SHELL
-
     end
 end
 

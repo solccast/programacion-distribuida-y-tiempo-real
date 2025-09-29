@@ -10,7 +10,7 @@
 
 double dwalltime(); 
 
-#define CANTIDAD_EXPERIMENTO 10
+#define CANTIDAD_EXPERIMENTO 100
 
 void error(char *msg)
 {

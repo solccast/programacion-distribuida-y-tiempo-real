@@ -3,7 +3,7 @@
 # Ojo, el host se tiene que pasar como argumento
 HOST=$1
 PORT=8080
-RESULT_FILE="resultados.md"
+RESULT_FILE="resultados.txt"
 SIZES=(10 100 1000 10000 100000 1000000)
 
 if [ -z "$HOST" ]; then

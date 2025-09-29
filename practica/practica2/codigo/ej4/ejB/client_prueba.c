@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <sys/time.h>
 
-#define CANTIDAD_EXPERIMENTO 100 
+#define CANTIDAD_EXPERIMENTO 10
 double dwalltime();
 
 void error(char *msg)

@@ -23,3 +23,6 @@ En el sitio donde se levante el contenedor será usado como volumen desde el hos
 
 > Se pueden levantar múltiples contenedores a partir de la misma imagen con sus particularidades y configuraciones a partir las options de 
 `docker run`
+
+
+wsl.exe -d Ubuntu
