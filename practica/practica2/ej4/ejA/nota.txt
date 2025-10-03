@@ -1,0 +1,22 @@
+Para ejecutar 4A:
+
+Levantar las VM's:
+vagrant up
+
+Ejecutar comandos para preparar cliente y servidor
+
+./setup_client.sh
+./setup_server.sh
+
+Entrar via ssh a la vm1 y vm2, una como cliente y otra como servidor
+- vagrant ssh vm1  # servidor
+- vagrant ssh vm2  # cliente
+
+Luego una actua de cliente y otra de servidor
+
+# Para Ejercicio 2
+- ./run_client.sh <ip_servidor>
+- ./run_server.sh
+# Para ping pong
+- ./run_client_pingpong.sh <ip_servidor>
+- ./run_server_pingpong.sh

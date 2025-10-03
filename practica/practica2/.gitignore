@@ -6,3 +6,5 @@
 !*.java
 !*.sh
 !.gitignore
+!*.txt
+!*.pdf

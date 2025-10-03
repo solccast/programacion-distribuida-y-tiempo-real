@@ -1,0 +1,21 @@
+# Resultados del experimento cliente-servidor - EJ 2
+Host: 192.168.56.10, Puerto: 8080
+
+| Modelo | Tamaño (bytes) | Tiempo write (ms) | Tiempo read (ms) | Resultado |
+| ------ | -------------- | ----------------- | ---------------- | --------- |
+
+| Modelo | Tamaño (bytes) | Tiempo write (ms) | Tiempo read (ms) | Resultado |
+| ------ | -------------- | ----------------- | ---------------- | --------- |
+
+| Modelo | Tamaño (bytes) | Tiempo write (ms) | Tiempo read (ms) | Resultado |
+| ------ | -------------- | ----------------- | ---------------- | --------- |
+
+| Modelo | Tamaño (bytes) | Tiempo write (ms) | Tiempo read (ms) | Resultado |
+| ------ | -------------- | ----------------- | ---------------- | --------- |
+
+| Modelo | Tamaño (bytes) | Tiempo write (ms) | Tiempo read (ms) | Resultado |
+| ------ | -------------- | ----------------- | ---------------- | --------- |
+
+| Modelo | Tamaño (bytes) | Tiempo write (ms) | Tiempo read (ms) | Resultado |
+| ------ | -------------- | ----------------- | ---------------- | --------- |
+
