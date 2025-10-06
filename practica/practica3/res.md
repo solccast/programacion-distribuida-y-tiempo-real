@@ -27,8 +27,8 @@ Conceptos: https://grpc.io/docs/guides/deadlines/
 - Optimización de recursos: Cuando se excede un deadline, gRPC cancela automáticamente la solicitud en el cliente y el servidor. Esto libera recursos en ambos extremos, evitando que se procesen solicitudes que ya no son relevantes.
 
 2. Describa y analice los distintos tipos de APIs que ofrece gRPC. Con base en el análisis, elabore una conclusión sobre cuál sería la mejor opción los siguientes escenarios: 
-a. Un sistema de pub/sub. 
-b. Un sistema de archivos FTP: Se conoce que el protocolo requiere dos canales: una de datos y la otra de información. Para el caso de información se usaría un canal de RPC simple de modo que ya sea el servidor/cliente que inicie 
+a. Un sistema de pub/sub: No me pregunten por qué pero uno unario, bien simple equisde por descarte a. 
+b. Un sistema de archivos FTP: Se conoce que el protocolo requiere dos canales: una de datos y la otra de control. Para el caso de control se usaría un canal de RPC simple de modo que ya sea el servidor/cliente que se comunique por las operaciones que indican. Para el caso del canal de datos ya sea de carga o descarga habrá un flujo unilateral de datos por lo tanto se usaría Client Streaming RPCs o Server Streaming RPCs. 
 
 ---
 ## Ejercicio 2: parte teoría
