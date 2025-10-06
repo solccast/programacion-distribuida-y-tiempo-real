@@ -50,4 +50,20 @@ Comandos para saber info: `cat /proc/cpuinfo` para saber los requerimientos de l
 ## Referencias 
 https://documentation.ubuntu.com/public-images/public-images-how-to/run-a-vagrant-box/
 
+--- 
+
+# Notas de corrección 
+t0
+send
+t1
+
+t0
+recv
+t1
+
+
+(t1 - t0)/2
++ = t1 - t0
+
+para los tamaños más chicos la suma de los tiempos va a dar el doble del oneway porque el mensaje es chico, el proceso es rápido y tarda lo mismo en procesar, para los mensajes más grandes el ack es casi irrelevante.
 
