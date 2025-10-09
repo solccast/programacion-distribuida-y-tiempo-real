@@ -1,7 +1,7 @@
 1.
 a. Introduzca cambios mínimos, como la inclusión de `exit()`, para provocar situaciones donde no se reciban comunicaciones o no haya un receptor disponible. Agregar screenshots de los errores encontrados.
 
-En este caso el exit lo puse antes luego de iniciar el server en `App.java`, del lado del cliente se observa lo siguiente:  
+En este caso el `exit` lo puse antes luego de iniciar el server en `App.java`, del lado del cliente se observa lo siguiente:  
 ![alt text](image.png)
 
 b. Este uso lo saqué de:  https://github.com/grpc/grpc-java/tree/master/examples/src/main/java/io/grpc/examples/deadline
@@ -27,11 +27,23 @@ Conceptos: https://grpc.io/docs/guides/deadlines/
 - Optimización de recursos: Cuando se excede un deadline, gRPC cancela automáticamente la solicitud en el cliente y el servidor. Esto libera recursos en ambos extremos, evitando que se procesen solicitudes que ya no son relevantes.
 
 2. Describa y analice los distintos tipos de APIs que ofrece gRPC. Con base en el análisis, elabore una conclusión sobre cuál sería la mejor opción los siguientes escenarios: 
-a. Un sistema de pub/sub: No me pregunten por qué pero uno unario, bien simple equisde por descarte a. 
-b. Un sistema de archivos FTP: Se conoce que el protocolo requiere dos canales: una de datos y la otra de control. Para el caso de control se usaría un canal de RPC simple de modo que ya sea el servidor/cliente que se comunique por las operaciones que indican. Para el caso del canal de datos ya sea de carga o descarga habrá un flujo unilateral de datos por lo tanto se usaría Client Streaming RPCs o Server Streaming RPCs. 
+a. **Un sistema de pub/sub**: Pensarlo como server streaming. Plantear el esquema, contexto. 
+b. **Un sistema de archivos FTP** (bidireccional, hay que definir los servicios): Se conoce que el protocolo requiere dos canales: una de datos y la otra de control. Para el caso de control se usaría un canal de RPC simple de modo que ya sea el servidor/cliente que se comunique por las operaciones que indican. Para el caso del canal de datos ya sea de carga o descarga habrá un flujo unilateral de datos por lo tanto se usaría Client Streaming RPCs o Server Streaming RPCs. 
+
+**Nota**: Desarrolle una conclusión fundamentada considerando los siguientes aspectos para ambos escenarios (pub/sub y FTP):
+- **Escalabilidad**: ¿Cómo se comporta cada API en situaciones con múltiples clientes y conexiones simultáneas?
+- **Consistencia vs Disponibilidad**: ¿Qué importancia tiene mantener la consistencia de los datos frente a la disponibilidad del sistema? 
+- **Seguridad**: ¿Qué mecanismos de autenticación, autorización y cifrado se deben utilizar para proteger los datos y las comunicaciones?
+- **Facilidad de implementación y mantenimiento**: ¿Qué tan fácil es implementar y mantener la solución para cada API? 
+
+#### Caso sistema de pub/sub
+> Sobre la arquitectura: https://www.geeksforgeeks.org/system-design/what-is-pub-sub/
+Contexto: si nos paramos del lado del servidor, el cliente está conectado al canal pero el servidor posee N conexiones con los diferentes N clientes, el `.proto` debiese ser apta para conexiones server streaming. 
 
 ---
-## Ejercicio 2: parte teoría
+
+## Ejercicio 2: parte teorica
+
 > [Documentación oficial sobre tipos gRPC](https://grpc.io/docs/what-is-grpc/core-concepts/)
 
 ### Tipos de API de gRPC 
