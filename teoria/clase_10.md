@@ -1,4 +1,4 @@
-# Programación Distribuida y Tiempo Real - Teoría - Clase 9: Estilos arquitecturales
+# Programación Distribuida y Tiempo Real - Teoría - Clase 10: Estilos arquitecturales
 
 Para nuestro estudio, la idea de estilo arquitectónico es importante. Tal estilo se formula en términos de componentes, la forma en que los componentes interactúan entre sí, el intercambio de datos entre los componentes y, por último, en cómo es que estos elementos se configuran juntos en un sistema.
 Un **componente** es una unidad modular con las _interfaces_/ requeridas bien definidas; dicha unidad es reemplazable dentro de su ambiente. El de conector, el cual generalmente se describe como un mecanismo que media la comunicación, coordinación o cooperación entre componentes (Mehta y cols., 2000; y Shaw y Clements, 1997). Por ejemplo, un conector puede formarse por los medios disponibles para hacer llamadas a procedimientos (remotos), paso de mensajes, o flujo de datos.
