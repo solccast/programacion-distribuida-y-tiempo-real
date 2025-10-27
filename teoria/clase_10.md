@@ -64,3 +64,8 @@ La idea central es que los procesos se comuniquen mediante tuplas (registros de 
 
 > Desacoplado en el espacio. Acoplado en el tiempo. 
 
+> Hay middleware q son para comunicaciones, en el ccaso de P/S implementación de comunicación.En el casode un navegador web con un servidor web no hay middleware. 
+
+> El ejemplo para la figura 2.16e está pensado para el ejemplo clásico de las base de datos distribuidas (teoricas)
+
+> Los juegos son el clasico ejemplo de user app/app database. 

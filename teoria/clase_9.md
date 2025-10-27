@@ -10,6 +10,8 @@ Las tres formas de ver los distintos tipos de software de soporte para las aplic
 - **Sistema Operativo de Red o _network operating system_(SOR)**: provee servicios para aplicaciones que pueden ser locales o remotas. El acceso es transparente a la red para algunos tipos de recursos. La característica principal que es tienen es que los nodos que funcionan en un SOR mantienen autonomía para gestionar sus propios recursos. Con un sistema operativo de red, un usuario puede iniciar sesión de forma remota en otra computadora, utilizando, por ejemplo, SSH, y ejecutar procesos allí. Sin embargo, mientras el sistema operativo gestiona los procesos que se ejecutan en su propio nodo, no gestiona los procesos entre los nodos. Existen múltiples imágenes del sistema. 
 - Middleware: en general, la capa de software usa servicios de un sistema operativo de red pero los usa de manera tal que se vea de la misma manera desde cualquier sistema (como centralizado). Su tarea es enmascarar la heterogeneidad (masking the heterogeneity) de las redes, hardware, sistemas operativos y lenguajes de programación subyacentes. Ofrece una abstracción de programación uniforme y presenta la vista de un sistema único.
 
+> Aclaracion del profe: da una visión única de algunas cosas en todos lados, por ejemplo, **un proceso** distribuido gestionado por un middleware.  
+
 ![alt text](image-4.png)
 
 ![alt text](image-5.png)
