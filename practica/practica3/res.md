@@ -38,8 +38,15 @@ b. **Un sistema de archivos FTP** (bidireccional, hay que definir los servicios)
 
 #### Caso sistema de pub/sub
 > Sobre la arquitectura: https://www.geeksforgeeks.org/system-design/what-is-pub-sub/
-Contexto: si nos paramos del lado del servidor, el cliente está conectado al canal pero el servidor posee N conexiones con los diferentes N clientes, el `.proto` debiese ser apta para conexiones server streaming. 
+Contexto: si nos paramos del lado del servidor, el cliente está conectado al canal pero el servidor posee N conexiones con los diferentes N clientes, el `.proto` debiese ser apta para conexiones server streaming. Si nos paramos del lado del cliente, el publisher enviaria información de forma periodica para mantener actualizados los tópicos. 
+Un sistema pub/sub requiere que la información nueva de un tópico sea informado de forma inmediata a los subscribers por lo cual sacrificar aspcectos de consistencia tienen menor relevancia que de disponibilidad. 
 
+
+#### Caso sistema FTP 
+Como las comunicaciones son continuas para la subida/descarga de archivos en el servidor es necesario usar bidirectional streaming dado que una vez que se abren los canales de comunicación y datos, se mantiene un flujo de mensajes enviando comandos y con carga/descarga de archivos. 
+La consistencia es relevante en este sistema para que se mantenga la integridad de los archivos subidos, por lo tanto la disponibilidad, en ese momento, es preferible dejarla de lado hasta finalizar la operación.  
+
+> Sobre la seguridad: gRPC ofrece _SSL/TLS_, _ALTS_ y _Token-Based authentication with Google_. 
 ---
 
 ## Ejercicio 2: parte teorica
